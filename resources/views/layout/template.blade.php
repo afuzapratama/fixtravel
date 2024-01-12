@@ -119,6 +119,8 @@
 
     @include('layout/footer')
 
+    @livewireScripts
+    <div class="pubble-app" data-app-id="122541" data-app-identifier="122541"></div>
+    <script type="text/javascript" src="https://cdn.chatify.com/javascript/loader.js" defer></script>
 </body>
-@livewireScripts
 </html>
