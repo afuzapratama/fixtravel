@@ -11,7 +11,13 @@ class PaymentHistoryController extends Controller
 {
     public function index()
     {
-        $history = Transaction::where('user_id', Auth::user()->id)->paginate(5);
+        if (Auth::user()->is_admin == true) {
+            // Admin dapat mengakses semua data
+            $history = Transaction::paginate(5);
+        } else {
+            // Pengguna non-admin hanya dapat mengakses data sesuai dengan user_id mereka
+            $history = Transaction::where('user_id', Auth::user()->id)->paginate(5);
+        }
 
         $trans_detail = TransactionDetail::all();
 

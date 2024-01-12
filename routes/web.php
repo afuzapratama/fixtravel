@@ -91,7 +91,6 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
     Route::get('/admin/inbox', [ReqTripController::class, 'adminInbox'])->name("manage.adminInbox");
     Route::post('/admin/inbox/status/{info}', [ReqTripController::class, 'creatInvoice'])->name("manage.creatInvoice");
 
-
 });
 
 

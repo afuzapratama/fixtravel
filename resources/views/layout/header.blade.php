@@ -74,12 +74,12 @@
                         </a>
                         <hr class="dropdown-divider">
                         @endif
-                        @if(Auth::user()->is_admin == false)
+                        {{-- @if(Auth::user()->is_admin == false) --}}
                         <a class="dropdown-item" href="/payment">
                             Payment History
                         </a>
                         <hr class="dropdown-divider">
-                        @endif
+                        {{-- @endif --}}
                         <a class="dropdown-item" href="{{ route('profile.edit') }}">
                            Settings
                         </a>

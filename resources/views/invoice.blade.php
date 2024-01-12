@@ -75,56 +75,81 @@
 
                         <div class="col-sm-4">
                             <h6 class="mb-3">Payment Details:</h6>
-                            <div>Invoice <strong>#BBB-245432</strong></div>
+
+
+                        {{-- @if($status->transaction_status == 'authorize')
+                            <div class="alert alert-success">Status: Authorized</div>
+
+                        @elseif($status->transaction_status == 'capture')
+                            <div class="alert alert-primary">Status: Captured</div>
+
+                        @elseif($status->transaction_status == 'settlement')
+                            <div class="alert alert-secondary">Status: Settled</div>
+
+                        @elseif($status->transaction_status == 'deny')
+                            <div class="alert alert-danger">Status: Denied</div>
+
+                        @elseif($status->transaction_status == 'pending')
+                            <div class="alert alert-warning">Status: Pending</div>
+
+                        @elseif($status->transaction_status == 'cancel')
+                            <div class="alert alert-info">Status: Cancelled</div>
+
+                        @elseif($status->transaction_status == 'refund')
+                            <div class="alert alert-dark">Status: Refunded</div>
+
+                        @elseif($status->transaction_status == 'partial_refund')
+                            <div class="alert alert-light">Status: Partially Refunded</div>
+
+                        @elseif($status->transaction_status == 'chargeback')
+                            <div class="alert alert-danger">Status: Chargeback</div>
+
+                        @elseif($status->transaction_status == 'partial_chargeback')
+                            <div class="alert alert-danger">Status: Partial Chargeback</div>
+
+                        @elseif($status->transaction_status == 'failure')
+                            <div class="alert alert-danger">Status: Failure</div>
+
+                        @elseif($status->transaction_status == 'expire')
+                            <div class="alert alert-secondary">Status: Expired</div>
+                        @endif --}}
+
+
+                            <div>Invoice <strong>#{{ $status->order_id }}</strong></div>
                         </div>
 
                     </div>
-
+                    <?php
+                    var_dump($status);
+                    ?>
                     <div class="table-responsive-sm">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th class="center">#</th>
                                     <th>Item</th>
                                     <th>Description</th>
-                                    <th class="center">UNIT</th>
                                     <th class="right">COST</th>
                                     <th class="right">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="center">1</td>
-                                    <td class="left">Laptops</td>
-                                    <td class="left">Macbook Air 8GB RAM, 256GB SSD</td>
-                                    <td class="center">5</td>
-                                    <td class="right">$900</td>
-                                    <td class="right">$4500</td>
-                                </tr>
-                                <tr>
-                                    <td class="center">2</td>
-                                    <td class="left">Samsung SSD</td>
-                                    <td class="left">Samsung SSD(256 GB)</td>
-                                    <td class="center">20</td>
-                                    <td class="right">$50</td>
-                                    <td class="right">$3000</td>
-                                </tr>
-                                <tr>
-                                    <td class="center">3</td>
-                                    <td class="left">PEN DRIVES</td>
-                                    <td class="left">Samsung Pendrives(32GB)</td>
-                                    <td class="center">100</td>
-                                    <td class="right">$10</td>
-                                    <td class="right">$1000</td>
-                                </tr>
+
+                                @foreach ($trans_details as $detail)
+                                    <tr>
+                                        <td class="left">{{ $detail->tour->tour_title }}</td>
+                                        <td class="left">{{ Str::limit($detail->tour->description, 27) }}</td>
+                                        <td class="center">{{ $detail->quantity }}</td>
+                                        <td class="right">$900</td>
+                                    </tr>
+                                @endforeach
+
 
                             </tbody>
                         </table>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-sm-5">Contrary to popular belief, Lorem Ipsum is not simply random
-                            text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000
-                            years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia.
+                        <div class="col-lg-6 col-sm-5">
+                            {!! $statusHTML !!}
                         </div>
                         <div class="col-lg-6 col-sm-5 ml-auto">
                             <table class="table table-clear">

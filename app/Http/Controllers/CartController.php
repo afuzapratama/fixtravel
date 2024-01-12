@@ -213,9 +213,8 @@ class CartController extends Controller
         $trans_details = TransactionDetail::where('transaction_id', $orderId)->get();
 
         if (!$transaction) {
-            abort(404);
+            redirect()->route('payment.index');
         }
-
 
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = false;
@@ -225,7 +224,63 @@ class CartController extends Controller
 
         $status = \Midtrans\Transaction::status($orderId);
 
-        return view('invoice');
+
+        switch ($status->transaction_status) {
+            case 'authorize':
+                $statusHTML = "<div class=\"alert alert-success\">Status: Authorized</div>";
+                break;
+
+            case 'capture':
+                $statusHTML = "<div class=\"alert alert-primary\">Status: Captured</div>";
+                break;
+
+            case 'settlement':
+                $statusHTML = "<div class=\"alert alert-secondary\">Status: Settled</div>";
+                break;
+
+            case 'deny':
+                $statusHTML = "<div class=\"alert alert-danger\">Status: Denied</div>";
+                break;
+
+            case 'pending':
+                $statusHTML = "<div class=\"alert alert-warning\">Status: Pending</div>";
+
+                break;
+
+            case 'cancel':
+                $statusHTML = "<div class=\"alert alert-info\">Status: Cancelled</div>";
+                break;
+
+            case 'refund':
+                $statusHTML = "<div class=\"alert alert-dark\">Status: Refunded</div>";
+                break;
+
+            case 'partial_refund':
+                $statusHTML = "<div class=\"alert alert-light\">Status: Partially Refunded</div>";
+                break;
+
+            case 'chargeback':
+                $statusHTML = "<div class=\"alert alert-danger\">Status: Chargeback</div>";
+                break;
+
+            case 'partial_chargeback':
+                $statusHTML = "<div class=\"alert alert-danger\">Status: Partial Chargeback</div>";
+                break;
+
+            case 'failure':
+                $statusHTML = "<div class=\"alert alert-danger\">Status: Failure</div>";
+                break;
+
+            case 'expire':
+                $statusHTML = "<div class=\"alert alert-secondary\">Status: Expired</div>";
+                break;
+
+            default:
+                $statusHTML = "<div class=\"alert alert-dark\">Status: Unknown</div>";
+        }
+
+
+        return view('invoice', compact('transaction', 'status','trans_details','statusHTML'));
 
     }
 }
